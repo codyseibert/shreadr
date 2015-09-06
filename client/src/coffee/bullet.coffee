@@ -1,8 +1,12 @@
+events = require './events'
+Guid = require 'guid'
+
 module.exports =
   class Bullet
     WIDTH = 5
     HEIGHT = 5
-    SPEED = 20
+    SPEED = 40
+    TIME_TO_LIVE = 1000
 
     ready = 2
     # TODO: Refactor this uglyness (some with in player / block)
@@ -16,6 +20,7 @@ module.exports =
       ready--
 
     constructor: (x = 0, y = 0, theta = 0) ->
+      @id = Guid.raw()
       @x = x
       @y = y
       @vx = 0
@@ -23,6 +28,10 @@ module.exports =
       @theta = theta
       @collidable = false
       @refreshHitbox()
+
+      setTimeout =>
+        events.emit 'delete', @
+      , TIME_TO_LIVE
 
     # TODO: Abstract from player and into
     # helper function or base class

@@ -9,6 +9,7 @@ $(document).ready ->
   Scene = require './scene'
   Block = require './block'
   Physics = require './physics'
+  camera = require './camera'
 
   events = require './events'
 
@@ -30,9 +31,13 @@ $(document).ready ->
   for i in [0..30]
     scene.add new Block i * Block.WIDTH, 500
 
+  # TODO: Should these live in the scene, or in main, or somewhere else?
   events.bind 'bullet', (data) ->
     theta = if not data.left then 0 else Math.PI
     scene.add new Bullet data.x, data.y, theta
+
+  events.bind 'delete', (entity) ->
+    scene.remove entity
 
   update = (delta) ->
     inputController.update delta
@@ -40,6 +45,7 @@ $(document).ready ->
     scene.apply friction
     scene.apply physics.apply
     scene.update delta
+    camera.set player
 
   render = ->
     renderer.clear()
