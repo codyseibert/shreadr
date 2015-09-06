@@ -10,6 +10,8 @@ $(document).ready ->
   Block = require './block'
   Physics = require './physics'
 
+  events = require './events'
+
   friction = require './friction'
   gravity = require './gravity'
 
@@ -27,6 +29,10 @@ $(document).ready ->
 
   for i in [0..30]
     scene.add new Block i * Block.WIDTH, 500
+
+  events.bind 'bullet', (data) ->
+    theta = if not data.left then 0 else Math.PI
+    scene.add new Bullet data.x, data.y, theta
 
   update = (delta) ->
     inputController.update delta

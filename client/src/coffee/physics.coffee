@@ -15,8 +15,11 @@ module.exports = do ->
       @scene = scene
 
     apply: (entity) =>
+      return if not entity.collidable
+
       _.each @scene.entities, (e) ->
         return if e is entity
+        return if not e.collidable
         if touching e, entity
           entity.stop?()
         else

@@ -15,6 +15,7 @@ module.exports =
       @left = x
       @right = x + Block.WIDTH
       @top = y
+      @collidable = true
       @bottom = y + Block.HEIGHT
 
     render: (renderer) ->
