@@ -20,6 +20,13 @@ gulp.task 'clean:build:js', ->
 gulp.task 'clean:build:css', ->
   del.sync [ 'build/css/main.css' ]
 
+gulp.task 'clean', [
+  'clean:tmp'
+  'clean:build:html'
+  'clean:build:js'
+  'clean:build:css'
+]
+
 gulp.task 'copy', ->
   gulp.src('src/index.html')
     .pipe gulp.dest('build')
@@ -33,6 +40,7 @@ gulp.task 'jade', ->
     .pipe jade
       pretty: true
     .pipe gulp.dest 'build'
+    .pipe livereload()
 
 gulp.task 'coffee', ->
   gulp.src('src/coffee/**/*.coffee')
@@ -44,6 +52,7 @@ gulp.task 'sass', ->
   gulp.src('src/sass/main.sass')
     .pipe(sass().on('error', gutil.log))
     .pipe(gulp.dest('build/css'))
+    .pipe livereload()
 
 gulp.task 'scripts', ['coffee'], ->
   gulp.src('tmp/js/main.js')

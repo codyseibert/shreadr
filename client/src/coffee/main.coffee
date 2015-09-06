@@ -1,35 +1,62 @@
-window.$ = window.jQuery = require 'jquery'
-Backbone = require 'backbone'
-Backbone.$ = $;
-require 'bootstrap'
+$ = require 'jquery'
 _ = require 'underscore'
 
 $(document).ready ->
-  users = [];
+  Player = require './player'
+  Bullet = require './bullet'
+  InputController = require './input_controller'
+  Renderer = require './renderer'
+  Scene = require './scene'
+  Block = require './block'
+  Physics = require './physics'
 
-  $.ajax
-    url: 'https://randomuser.me/api/?results=100'
-    dataType: 'json'
-    success: (data) ->
-      _.each data.results, (user) ->
-        users.push user.user
-      showUsers()
-      startRotatingUsers()
+  friction = require './friction'
+  gravity = require './gravity'
 
-  showUsers = ->
-    _.each users, (user) ->
-      $('body').append "<img src='#{user.picture.medium}' />"
+  require './window'
 
-  startRotatingUsers = ->
+  renderer = new Renderer()
+  scene = new Scene
+  physics = new Physics scene
 
-    setInterval ->
-      $first = $('img').first()
-      $first.addClass 'fade'
+  player = new Player()
+  inputController = new InputController player
 
-      setTimeout ->
-        $first.detach()
-        $first.removeClass 'fade'
-        $('body').append $first
-      , 200
+  # Add all entities here
+  scene.add player
 
-    , 500
+  for i in [0..30]
+    scene.add new Block i * Block.WIDTH, 500
+
+  update = (delta) ->
+    inputController.update delta
+    scene.apply gravity
+    scene.apply friction
+    scene.apply physics.apply
+    scene.update delta
+
+  render = ->
+    renderer.clear()
+    scene.render renderer
+
+  lastUpdate = new Date()
+  setInterval ->
+    now = new Date()
+    delta = now - lastUpdate
+    update delta
+    lastUpdate = now
+  , 10
+
+  window.requestAnimationFrame = do ->
+    window.requestAnimationFrame ||
+    window.webkitRequestAnimationFrame ||
+    window.mozRequestAnimationFrame    ||
+    window.oRequestAnimationFrame      ||
+    window.msRequestAnimationFrame     ||
+    (callback) ->
+      setTimeout(render, 1000 / 60)
+
+  (recursiveAnim = () ->
+    render()
+    requestAnimationFrame recursiveAnim
+  )()
