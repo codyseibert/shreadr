@@ -1,14 +1,7 @@
 _ = require 'underscore'
+collision = require './collision'
 
 module.exports = do ->
-
-  touching = (r1, r2) ->
-    not (
-      r2.left > r1.right or
-      r2.right < r1.left or
-      r2.top > r1.bottom or
-      r2.bottom < r1.top
-    )
 
   class Physics
     constructor: (scene) ->
@@ -20,7 +13,7 @@ module.exports = do ->
       _.each @scene.entities, (e) ->
         return if e is entity
         return if not e.collidable
-        if touching e, entity
+        if collision.touching e, entity
           entity.stop?()
         else
           entity.isInAir = true

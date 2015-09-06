@@ -1,5 +1,6 @@
 physics = require './physics'
 events = require './events'
+Guid = require 'guid'
 
 module.exports =
   class Player
@@ -22,6 +23,7 @@ module.exports =
       ready--
 
     constructor: (x = 0, y = 0) ->
+      @id = Guid.raw()
       @x = 0
       @y = 0
       @vy = 0

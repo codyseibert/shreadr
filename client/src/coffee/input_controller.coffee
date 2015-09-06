@@ -1,4 +1,7 @@
 $ = require 'jquery'
+events = require './events'
+camera = require './camera'
+Block = require './block'
 
 module.exports =
   class InputController
@@ -16,6 +19,25 @@ module.exports =
 
     $(document).keyup (event) ->
       keyMap[event.which || event.keyCode] = false
+
+    $(document).click (event) ->
+      extra = if event.clientX + camera.cx() < 0 then -1 else 0
+      nx = parseInt((event.clientX + camera.cx()) / Block.WIDTH + extra) * Block.WIDTH
+      ny = parseInt((event.clientY + camera.cy()) / Block.WIDTH) * Block.WIDTH
+
+      events.emit 'block',
+        x: event.clientX + camera.cx()
+        y: event.clientY + camera.cy()
+        nx: nx
+        ny: ny
+
+    $(document).mousemove (event) ->
+      # TODO: if debug mode, set opacity block over mouse cursor
+      # mx = event.clientX
+      # my = event.clientY
+      # mx = parseInt(mx / 64) * 64
+      # my = parseInt(my / 64) * 64
+      # console.log mx, my
 
     constructor: (player) ->
       @player = player

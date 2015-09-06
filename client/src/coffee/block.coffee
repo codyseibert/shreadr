@@ -1,15 +1,17 @@
+Guid = require 'guid'
 module.exports =
   class Block
-    @WIDTH = 32
-    @HEIGHT = 32
+    @WIDTH = 64
+    @HEIGHT = 64
 
     ready = false
     image = new Image()
-    image.src = 'http://professorklein.com/production/help/gamemaker_pc/GM%20Tutorials/GM%20Tutorial%20-%20Maze%20Games/Resources/wall.gif'
+    image.src = 'images/block.png'
     image.addEventListener 'load', ->
       ready = true
 
-    constructor: (x = 0, y = 0)->
+    constructor: (x = 0, y = 0) ->
+      @id = Guid.raw()
       @x = x
       @y = y
       @left = x
