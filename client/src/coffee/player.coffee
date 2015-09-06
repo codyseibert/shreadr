@@ -7,7 +7,7 @@ module.exports =
     WIDTH = 108
     HEIGHT = 136
     GUN_OFFSET = 26
-    JUMP = 8
+    JUMP = 16
     SPEED = 5
     MAX_VX = 5
     SHOOT_COOLDOWN = 200
@@ -64,12 +64,14 @@ module.exports =
       , SHOOT_COOLDOWN
 
     jump: ->
+      return if @isInAir
       @vy = -JUMP
       @y -= 5
       @isInAir = true
 
     stop: ->
       @vy = 0
+      @isInAir = false
 
     addVy: (amount) ->
       @vy += amount
