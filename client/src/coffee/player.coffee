@@ -4,8 +4,8 @@ Guid = require 'guid'
 
 module.exports =
   class Player
-    WIDTH = 108
-    HEIGHT = 136
+    WIDTH = 80
+    HEIGHT = 110
     GUN_OFFSET = 26
     JUMP = 16
     SPEED = 5

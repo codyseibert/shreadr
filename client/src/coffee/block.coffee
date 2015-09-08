@@ -12,6 +12,7 @@ module.exports =
 
     constructor: (x = 0, y = 0) ->
       @id = Guid.raw()
+      @type = 'block'
       @x = x
       @y = y
       @left = x

@@ -4,6 +4,7 @@ module.exports =
   class Scene
 
     constructor: ->
+      #TODO: Make this private
       @entities = []
 
     add: (entity) ->
@@ -13,6 +14,9 @@ module.exports =
       index = _.findIndex @entities, (e) ->
         e.id is entity.id
       @entities.splice index, 1
+
+    clear: ->
+      @entities = []
 
     apply: (fn) ->
       _.each @entities, (entity) -> fn entity

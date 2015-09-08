@@ -36,8 +36,6 @@ gulp.task 'copy', ->
     .pipe gulp.dest('build/fonts')
   gulp.src('src/images/*')
     .pipe gulp.dest('build/images')
-  gulp.src('src/maps/*')
-    .pipe gulp.dest('build/maps')
 
 gulp.task 'jade', ->
   gulp.src 'src/index.jade'

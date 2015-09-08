@@ -7,7 +7,7 @@ Map = require '../models/map'
 
 module.exports = do ->
   # TODO: Validate inputs
-  
+
   index = (req, res) ->
     Map.find({}).toArray (err, maps) ->
       res.status 200
@@ -24,15 +24,18 @@ module.exports = do ->
   put = (req, res) ->
     Map.update
       _id: ObjectId req.params.id
-    , req.body
+    , $set: entities: req.body.entities
     , (err, map) ->
       res.status 200
       res.send 'success'
 
   post = (req, res) ->
-    Map.save req.body, (err, map) ->
+    Map.insert
+      name: req.body.name
+      entities: []
+    , (err, data) ->
       res.status 200
-      res.send 'success'
+      res.send data.insertedIds[0]
 
   index: index
   show: show

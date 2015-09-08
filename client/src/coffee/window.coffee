@@ -1,5 +1,6 @@
 $ = require 'jquery'
 context = require './context'
+panels = require './panels'
 
 module.exports = do ->
 

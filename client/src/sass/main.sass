@@ -2,3 +2,40 @@ body
   background-color: red
   padding: 0px
   margin: 0px
+
+.maps
+  position: fixed
+  left: 0px
+  top: 0px
+  z-index: 2
+  text-align: center
+  width: 200px
+  height: 200px
+  border-radius: 10px
+  background-color: orange
+
+.overlay
+  position: fixed
+  left: 0px
+  top: 0px
+  width: 100%
+  height: 100%
+  z-index: 1
+  background-color: rgba(255, 255, 255, 0.5)
+
+.panels
+  .maps
+    .maplist
+      .item
+        cursor: pointer
+        text-align: center
+        padding: 10px
+        border-bottom: 1px solid black
+        background-color: white
+        font-size: 20px
+
+      .item:hover
+        color: #71582B
+
+      .item:last-child
+        border-bottom: none

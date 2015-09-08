@@ -35,6 +35,7 @@ $(document).ready ->
   Map = require './map'
   camera = require './camera'
   collision = require './collision'
+  panels = require './panels'
 
   events = require './events'
 
@@ -49,16 +50,23 @@ $(document).ready ->
 
   player = new Player()
   inputController = new InputController player
+  map = null
 
-  # Add all entities here
-  scene.add player
-
-  new Map 'map0', scene
+  panels.show 'MapListPanel'
+  panels.show 'OverlayPanel'
+  panels.refresh()
 
   # TODO: Should these live in the scene, or in main, or somewhere else?
   events.bind 'bullet', (data) ->
     theta = if not data.left then 0 else Math.PI
     scene.add new Bullet data.x, data.y, theta
+
+  events.bind 'map', (data) ->
+    scene.clear()
+    scene.add player
+    map = new Map data._id, data.entities, scene
+    panels.hide 'MapListPanel'
+    panels.hide 'OverlayPanel'
 
   clickToRect = (click) ->
     click.left = click.x
@@ -72,12 +80,19 @@ $(document).ready ->
       collision.touching click, entity
 
   events.bind 'block', (click) ->
+    return if panels.isVisible 'MapListPanel'
     clickToRect click
     index = wasClickOnBlock(click)
     if index is -1
-      scene.add new Block click.nx, click.ny
+      block = new Block click.nx, click.ny
+      scene.add block
+      map.add block
+      map.persist()
     else
-      scene.remove scene.entities[index]
+      entity = scene.entities[index]
+      scene.remove entity
+      map.remove entity
+      map.persist()
 
   events.bind 'delete', (entity) ->
     scene.remove entity
